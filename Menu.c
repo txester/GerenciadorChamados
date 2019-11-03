@@ -11,6 +11,42 @@ void menuCliente(){ //EVITAR REPETIÇÃO DE CONDIGO.
     printf("3-Remover Chamados\n");
     printf("4-Voltar\n");
     printf("0-Sair\n");
+
+    int menucliente = -1;
+    printf("Selecione Um Menu\n");
+    scanf("%i",&menucliente);
+
+    system ("cls")
+
+
+    switch(menucliente){
+
+
+    case 1:
+        criarChamados();
+        break;
+    case 2:
+        acompanharChamados();
+        break;
+
+    case 3:
+        printf("3 - removerChamados");
+        break;
+
+    case 4:
+        menu = -1;
+        break;
+
+    case 0:
+        menu = 0;
+        break
+
+            default:
+    }
+
+
+
+
 };
 
 void menuGerente(){
@@ -22,14 +58,31 @@ void menuGerente(){
     printf("Relatorios\n");
     printf("4-Voltar\n");
     printf("0-Sair\n");
+
+    int menugerente = -1;
+    printf("Selecione Um Menu\n");
+    scanf("%i",&menugerente);
+
+    system ("cls")
+
+
+
+
+
 };
 
 void menuPrincipal(){
- printf("Menu\n");
+    printf("Menu\n");
     printf("---------------------\n");
     printf("1-Cliente\n");
     printf("2-Gerente\n");
     printf("0-Sair\n");
+
+    printf("\nSelecione O Menu: ");
+    scanf("%i",&menu);
+
+
+
 };
 
 int main(){
@@ -47,8 +100,7 @@ int main(){
                menuPrincipal();
         }
 
-        printf("\nSelecione O Menu: ");
-        scanf("%i",&menu);
+
 
         system("cls");//FUNÇÃO DO SISTEMA PARA LIMPAR TELA.
 
