@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<conio.h>
-//#include <string.h>
+//#include<conio.h>
 
 // http://linguagemc.com.br/struct-em-c/
 // https://www.inf.pucrs.br/~pinho/LaproI/Listas/Listas1.htm
@@ -13,6 +12,7 @@ int menu = -1;
 typedef struct cha {//ESTRUTURA DE DADOS
 
 	int id;
+	int idNivelOperaciona;
 	char titulo[40];
 	int status;
 	struct cha *proximo;
@@ -81,22 +81,61 @@ int gerarIdAgendamento(){
 
 }
 
+void legenda(){
+
+    printf("\n\n\tLegenda > Nivel operacional: \n");
+    printf("\t\t1 - Atendimento Virtual (mensagem ou chamada de voz)\n");
+    printf("\t\t2 - Atendimento Remoto\n");
+    printf("\t\t3 - Visita de um Tecnico");
+
+    printf("\n\n\tLegenda > Status: \n");
+    printf("\t\t1 - Em Aberto | 2 - Em Atendimento | 3 - Em Atendimento - Visita Tecnica\n");
+    printf("\t\t4 - Concluido | 5 - Nao resolvido\n\n");
+
+}
+
 void cadastrarChamados(){
+
+	int idNivelOperaciona = 0;
+	int valido = 0;
+	while(valido == 0){
+
+		printf("---------- Cadastro de chamados - Nivel Operacional -----------\n\n");
+
+        printf("1 - Atendimento Virtual (mensagem ou chamada de voz)\n");
+        printf("2 - Atendimento Remoto\n");
+        printf("3 - Visita de um Tecnico\n\n");
+
+        fflush(stdin);
+      	printf("Selecione um nivel operacional ......: ");
+        scanf("%i", &idNivelOperaciona);
+        system("cls");
+
+        if(idNivelOperaciona == 1 || idNivelOperaciona == 2 || idNivelOperaciona == 3){
+            valido = 1;
+        }
+
+	}
 
 	printf("\n---------- Cadastro de chamados -----------\n\n");
 
 	chamado *tmpChamado = (chamado *) malloc(sizeof(chamado));
 
 	tmpChamado->id = gerarIdChamado();
+	tmpChamado->idNivelOperaciona = idNivelOperaciona;
+	tmpChamado->status = 1; // É cadastrado sempre em aberto
 
-    printf("ID Chamado...: %d\n", tmpChamado->id);
+    printf("ID Chamado.........: %d\n", tmpChamado->id);
+    printf("Nivel Operacional..: %d\n", tmpChamado->idNivelOperaciona);
 
-	printf("Titulo ......: ");
+	printf("Titulo ............: ");
 	fflush(stdin);
 	fgets(tmpChamado->titulo, 40, stdin);
 
-	printf("Status ......: ");
-	scanf("%i", &tmpChamado->status);
+	printf("Status ............: %d", tmpChamado->status);
+	//scanf("%i", &tmpChamado->status);
+
+    legenda();
 
 	if(listaChamados == NULL){
 
@@ -111,7 +150,7 @@ void cadastrarChamados(){
 
 	}
 
-	printf("\nChamado adicionado com sucesso !!!\n");
+	printf("\n\nChamado adicionado com sucesso !!!\n");
 	printf("Precione enter para voltar ao menu");
 	getch();
 
@@ -198,18 +237,41 @@ void alterarChamados(){
     while(tmpChamado != NULL){
 
         if (id == tmpChamado->id){
+
+            int idStatus = 0;
+            int valido = 0;
+            while(valido == 0){
+
+                system("cls");
+                printf("---------- Alterar chamados - Status -----------\n\n");
+
+                printf("1 - Em Aberto\n");
+                printf("2 - Em Atendimento\n");
+                printf("3 - Em Atendimento - Visita Tecnica\n");
+                printf("4 - Concluido\n");
+                printf("5 - Nao resolvido\n\n");
+
+                fflush(stdin);
+                printf("Selecione um status ......: ");
+                scanf("%i", &idStatus);
+
+                if(idStatus == 1 || idStatus == 2 || idStatus == 3 || idStatus == 4 || idStatus == 5){
+                    valido = 1;
+                    tmpChamado->status = idStatus;
+                }
+
+            }
+
             system("cls");
             printf("\n---------- Alterar chamados -----------\n\n");
 
-            printf("ID Chamado ...: %i\n", tmpChamado->id);
+            printf("ID Chamado ........: %i\n", tmpChamado->id);
+            printf("Nivel Operacional..: %d\n", tmpChamado->idNivelOperaciona);
+            printf("Titulo ............: %s", tmpChamado->titulo);
+            printf("Status ............: %d\n", tmpChamado->status);
 
-            printf("Titulo .......: ");
-            fflush(stdin);
-            fgets(tmpChamado->titulo, 40, stdin);
-
-            printf("Status .......: ");
-            scanf("%i", &tmpChamado->status);
-
+            legenda();
+            getch();
         }
 
         tmpChamado = tmpChamado->proximo;
@@ -231,13 +293,16 @@ void acompanharChamados(){
 
     while(tmpChamado != NULL){
 
-    	printf("ID ...............: %i\n", tmpChamado->id);
-    	printf("Titulo ...........: %s", tmpChamado->titulo);
-		printf("Status ...........: %i\n\n", tmpChamado->status);
+    	printf("ID ................: %i\n", tmpChamado->id);
+    	printf("Nivel Operacional..: %d\n", tmpChamado->idNivelOperaciona);
+    	printf("Titulo ............: %s", tmpChamado->titulo);
+		printf("Status ............: %i\n\n", tmpChamado->status);
 
     	tmpChamado = tmpChamado->proximo;
 
 	}
+
+	legenda();
 
 }
 
@@ -314,7 +379,7 @@ void menuCliente(){
 	printf("0 - Sair \n");
 
 	int menuCliente = -1;
-	printf("Selecione o menu: ");
+	printf("\nSelecione o menu: ");
 	scanf("%i", &menuCliente);
 	system("cls");
 
@@ -356,7 +421,7 @@ void menuGerente(){
 		printf("0 - Sair \n");
 
 		int menuGerente = -1;
-		printf("Selecione o menu: ");
+		printf("\nSelecione o menu: ");
 		scanf("%i", &menuGerente);
 		system("cls");
 
@@ -401,7 +466,7 @@ void menuPrincipal(){
 	printf("2 - Gerente\n");
 	printf("0 - Sair \n");
 
-	printf("Selecione o menu: ");
+	printf("\nSelecione o menu: ");
 	scanf("%i", &menu);
 
 }
@@ -432,6 +497,4 @@ int main (void){
 
 	return 0;
 
-
 }
-
